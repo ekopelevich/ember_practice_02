@@ -16,7 +16,28 @@
   </head>
   <body>
     {{content-for 'body'}}
-    <h1>Sanity Check</h1>
+    <script type="text/x-handlebars" data-template-name="todo-list">
+    {{#if length}}
+      <section id="main">
+        {{#if canToggle}}
+          {{input type="checkbox" id="toggle-all" checked=allTodos.allAreDone}}
+        {{/if}}
+        <ul id="todo-list">
+          {{#each}}
+            <li {{bind-attr class="isCompleted:completed isEditing:editing"}}>
+              {{#if isEditing}}
+                {{todo-input type="text" class="edit" value=bufferedTitle focus-out="doneEditing" insert-newline="doneEditing" escape-press="cancelEditing"}}
+              {{else}}
+                {{input type="checkbox" class="toggle" checked=isCompleted}}
+                <label {{action "editTodo" on="doubleClick"}}>{{title}}</label>
+                <button {{action "removeTodo"}} class="destroy"></button>
+              {{/if}}
+              </li>
+          {{/each}}
+        </ul>
+      </section>
+    {{/if}}
+  </script>
     <script src="assets/vendor.js"></script>
     <script src="assets/ember-practice2.js"></script>
 
